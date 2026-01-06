@@ -8,6 +8,7 @@ from backend.battle_engine import simulate_battle
 app = FastAPI()
 
 class BattleRequest(BaseModel):
+    phase: str
     attacker: str
     defender: str
 
@@ -17,11 +18,14 @@ def root():
 
 @app.post("/battle")
 def battle(req: BattleRequest):
+    phase = req.phase.lower()
+    if phase not in ["melee", "ranged"]:
+        return {"error": "Invalid phase. Must be 'melee' or 'ranged'"}  
     attacker = UNITS.get(req.attacker)
     defender = UNITS.get(req.defender)
 
     if not attacker or not defender:
         return {"error": "Invalid unit name"}
 
-    result = simulate_battle(attacker, defender)
+    result = simulate_battle(attacker, defender,phase)
     return result

@@ -8,25 +8,51 @@ UNITS = {
         "save": 3,
         "wounds": 2,
         "attacks": 1,
-        "weapon": {
-            "name": "Bolt Rifle",
-            "strength": 4,
-            "ap": -1,
-            "damage": 1
+        "melee": {
+            "weapon": {
+                "attacks": 1,
+                "name": "Chainsword",
+                "bs": 3,
+                "strength": 4,
+                "ap": 0,
+                "damage": 1
+            }
+        },  
+        "ranged": {
+            "weapon": {
+                "attacks": 1,
+                "name": "Bolt Rifle",
+                "bs": 3,
+                "strength": 4,
+                "ap": -1,
+                "damage": 1
+            }
         }
     },
     "ork_boy": {
         "name": "Ork Boy",
-        "bs": 5,
         "toughness": 5,
-        "save": 6,
+        "save": 5,
         "wounds": 1,
-        "attacks": 2,
-        "weapon": {
-            "name": "Slugga",
-            "strength": 4,
-            "ap": 0,
-            "damage": 1
+        "melee": {
+            "weapon": {
+                "attacks": 3,
+                "name": "Choppa",
+                "bs": 3,
+                "strength": 4,
+                "ap": -1,
+                "damage": 1
+            }
+        },
+        "ranged": {
+            "weapon": {
+                "attacks": 1,
+                "name": "Slugga",
+                "bs": 5,
+                "strength": 4,
+                "ap": 0,
+                "damage": 1
+            }
         }
-    }
+    },
 }
