@@ -3,11 +3,9 @@
 UNITS = {
     "space_marine": {
         "name": "Space Marine",
-        "bs": 3,   # Ballistic Skill (3+)
         "toughness": 4,
         "save": 3,
         "wounds": 2,
-        "attacks": 1,
         "melee": {
             "weapon": {
                 "attacks": 1,
