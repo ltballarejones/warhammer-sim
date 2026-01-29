@@ -14,6 +14,7 @@ def hits(attacker, phase):
     weapon = attacker.get(phase, {}).get("weapon", {})
     bs = weapon.get("bs", attacker.get("bs"))
     attacks = weapon.get("attacks", attacker.get("attacks", 1))
+    logger.info("[hits] attacker=%s phase=%s attacks=%d bs=%d ap=%d", attacker.get("name"), phase, attacks, bs, weapon.get("ap", 0))
     if bs is None:
         return 0
     rolls = [roll_d6() for _ in range(attacks)]
@@ -46,6 +47,9 @@ def saves(defender, wounds_count, ap=0):
 
     # AP in unit data is given as negative numbers (e.g. -1),
     # effective save increases when AP is negative.
+    # some things to add here
+    # 1. feel no pains
+    # 2. invulnerable saves
     effective_save = base_save - ap
     if effective_save <= 1:
         effective_save = 2
@@ -57,6 +61,7 @@ def saves(defender, wounds_count, ap=0):
 
 def simulate_battle(attacker, defender, phase):
     weapon = attacker.get(phase, {}).get("weapon", {})
+    # this is where strats and abilities would modify weapon, attacker, defender, etc.
 
     hit_count = hits(attacker, phase)
     wound_count = wounds(weapon, defender, hit_count)
