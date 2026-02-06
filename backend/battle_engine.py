@@ -11,14 +11,23 @@ def roll_d6():
     return random.randint(1, 6)
 
 def hits(attacker, phase):
-    weapon = attacker.get(phase, {}).get("weapon", {})
-    bs = weapon.get("bs", attacker.get("bs"))
-    attacks = weapon.get("attacks", attacker.get("attacks", 1))
-    logger.info("[hits] attacker=%s phase=%s attacks=%d bs=%d ap=%d", attacker.get("name"), phase, attacks, bs, weapon.get("ap", 0))
-    if bs is None:
-        return 0
+    weapon = attacker.get("weapons", {}).get(phase, [])[0]  # Simplification: use first weapon
+    bs,ws = None,None
+    if(phase=="melee"):
+        ws = weapon.get("ws", attacker.get("ws"))
+        attacks = weapon.get("attacks", attacker.get("attacks", 1))
+    else:
+        bs = weapon.get("bs", attacker.get("bs"))
+        attacks = weapon.get("attacks", attacker.get("attacks", 1))
+        logger.info("[hits] attacker=%s phase=%s attacks=%d bs=%d ap=%d", attacker.get("name"), phase, attacks, bs, weapon.get("ap", 0))
+    
     rolls = [roll_d6() for _ in range(attacks)]
-    return sum(1 for r in rolls if r >= bs)
+    if bs is None and ws is None:
+        return 0
+    if bs is not None:
+        return sum(1 for r in rolls if r >= bs)
+    else:
+        return sum(1 for r in rolls if r >= ws)
 
 def wounds(weapon, defender, hits):
     strength = weapon.get("strength", 0)
@@ -60,9 +69,8 @@ def saves(defender, wounds_count, ap=0):
     return sum(1 for r in rolls if r < effective_save)  # failed saves
 
 def simulate_battle(attacker, defender, phase):
-    weapon = attacker.get(phase, {}).get("weapon", {})
+    weapon = attacker.get("weapons", {}).get(phase, [])[0]  # Simplification: use first weapon
     # this is where strats and abilities would modify weapon, attacker, defender, etc.
-
     hit_count = hits(attacker, phase)
     wound_count = wounds(weapon, defender, hit_count)
     failed_saves = saves(defender, wound_count, weapon.get("ap", 0))
